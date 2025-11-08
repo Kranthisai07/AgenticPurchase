@@ -2,15 +2,17 @@
 
 End-to-end demo: upload/take a product image → Vision hypothesis → Intent confirm → Sourcing/ranking from mock catalog → Trust check → Test checkout → Receipt.
 
-## Quickstart
+## Quickstart (Unified venv)
 
-```bash
-python -m venv .venv && . .venv/bin/activate  # (Windows: .venv\Scripts\activate)
-pip install -r requirements-agentic.txt
-uvicorn apps.coordinator.main:app --reload
-
+```powershell
+cd C:\Project
+./scripts/setup_venv.ps1
+./.venv/Scripts/Activate.ps1
+python -m uvicorn Agentic_AI.apps.coordinator.main:app --reload
 ```
-Open: http://127.0.0.1:8000/docs  (interactive Swagger)
+
+- Playground with per‑request overrides: http://127.0.0.1:8000/playground
+- Swagger: http://127.0.0.1:8000/docs
 
 > The vision agent uses Google Cloud Vision. Provide credentials via `GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\service-account.json` (or supply `VISION_SERVICE_ACCOUNT_FILE`). If you drop a `service-account.json` alongside the code it will be picked up automatically.
 
@@ -59,7 +61,10 @@ docker-compose.yml
 .env.example
 ```
 ## Notes
-- Week-1 runs *in-process* (one FastAPI service) for speed. Agents are importable modules.
-- Timeouts/retries/token caps are encoded in `apps/coordinator/config.py` and used by the saga.
+- Default runtime is *in‑process* via LangGraph (one FastAPI service). Agents are importable modules.
+- S3 Parallel Branching: strict (brand+category+tokens) and fuzzy keyword branches run in parallel and merge. See `S3_BRANCH` and `S3_SOURCING` events in responses.
+- S4 Bounded Compensation: tries up to K safer vendors within a price window and extra latency cap. Env defaults: `S4_COMP_TOPK=3`, `S4_COMP_PRICE_WINDOW_PCT=10`, `S4_COMP_EXTRA_LATENCY_MS=500`. Per‑request overrides at `/playground`:
+  - Form: `comp_topk`, `comp_price_pct`, `comp_latency_ms`, `token_policy`, `token_budgets_json`
+  - Headers: `X-Comp-TopK`, `X-Comp-PriceWindowPct`, `X-Comp-LatencyMs`, `X-Token-Policy`, `X-Token-Budgets`
 - Idempotent checkout via `Idempotency-Key` header.
-- Evaluation harness records per-state latency/accuracy in `/metrics` and appends JSONL records to `logs/eval.log` for offline analysis.
+- Evaluation harness writes JSONL to `Agentic_AI/logs/eval.log`. Use `scripts/eval_report.py` for CSVs (`eval_summary.csv`, `stage_latency.csv`, `token_summary.csv`, `ranking_metrics.csv`) and options `--compare` / `--bootstrap`.

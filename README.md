@@ -3,91 +3,110 @@ Research framework demonstrating image-driven product procurement with agentic A
 =======
 ﻿# Agentic Purchase Research System
 
-This repository contains a research-grade, multi-agent purchase assistant that combines computer vision, language understanding, sourcing heuristics, trust analysis, and mock checkout into a reproducible Coordinator/Worker pipeline. The project runs as six FastAPI services (five workers + a coordinator) with an optional React chat UI, pluggable LLM support (OpenAI / Gemini / Ollama), token budgeting, and an evaluation harness that logs every saga and token event.
+This repository contains a research‑grade, multi‑agent purchase assistant that combines computer vision, language understanding, sourcing heuristics, trust analysis, and mock checkout. By default it runs in‑process using a LangGraph state machine behind a single FastAPI gateway. The legacy microservice mode (six FastAPI services: five workers + a coordinator) is still supported for distributed deployments. The project ships with an optional React chat UI, pluggable LLM support (OpenAI / Gemini / Ollama), token budgeting, and an evaluation harness that logs every saga and token event.
+
+Note: The default runtime now uses an in-process LangGraph orchestration with a single FastAPI gateway. The legacy multi-service mode remains available, but most development and experiments run in one process for speed and reproducibility.
+
+## Quickstart (Unified venv)
+
+```
+cd C:\Project
+./scripts/setup_venv.ps1
+./.venv/Scripts/Activate.ps1
+python -m uvicorn Agentic_AI.apps.coordinator.main:app --reload
+```
+
+- Built‑in playground: http://127.0.0.1:8000/playground (per‑request overrides)
+- React UI (optional): `cd agentic-purchase-chat-ui && npm install && npm run dev`
+
+## Agentic Graph (In‑Process)
+
+- Source: `Agentic_AI/agentic_graph/` (state, nodes, graph, orchestrator, utils)
+- Endpoints (FastAPI coordinator): `/saga/preview` (S1–S4) and `/saga/start` (S1–S5)
+- Optional LangServe host: `python -m uvicorn Agentic_AI.langserve_app:app --reload` exposing `/saga/*/invoke`
+
+### S3 Parallel Branching
+- Two sourcing strategies run in parallel and merge:
+  - Strict branch: brand+category and item-name tokens required
+  - Fuzzy branch: relaxed keyword/substring matching
+- Merge: dedupe by URL, prefer higher score; optional LLM rerank (token‑budgeted) still applies.
+- New events in response/log: `S3_BRANCH` (strict_count, fuzzy_count) and `S3_SOURCING` (offer_count, best_vendor, best_price)
+
+### S4 Bounded Compensation
+- If the chosen vendor is risky (medium/high), try up to K safer alternatives within a price window and extra latency cap.
+- Defaults (env): `S4_COMP_TOPK=3`, `S4_COMP_PRICE_WINDOW_PCT=10`, `S4_COMP_EXTRA_LATENCY_MS=500`
+- Per‑request overrides (form or headers) are supported and surfaced at `/playground`:
+  - Form: `comp_topk`, `comp_price_pct`, `comp_latency_ms`, `token_policy`, `token_budgets_json`
+  - Headers: `X-Comp-TopK`, `X-Comp-PriceWindowPct`, `X-Comp-LatencyMs`, `X-Token-Policy`, `X-Token-Budgets`
+- Event per attempt: `S4_COMPENSATE` with `{candidate_vendor, candidate_risk, price_delta_pct, switched}`
+
+## Evaluation Harness
+
+- Dataset: `evaluation/dataset.yaml` (images live in `evaluation/images/`)
+- Runner: `scripts/run_eval.py` (FastAPI legacy or `--langserve`)
+  - Example: `python scripts/run_eval.py --dataset evaluation/dataset.yaml --mode preview --label deterministic`
+- Reporter: `scripts/eval_report.py`
+  - Outputs: `eval_summary.csv`, `stage_latency.csv`, `token_summary.csv`, `ranking_metrics.csv`
+  - Options: `--compare LOG_A LOG_B` and `--bootstrap 1000`
+
+## Unified Environment
+- Use the root venv for everything: `scripts/setup_venv.ps1` → `./.venv/Scripts/Activate.ps1`
+- Backend deps pinned in `Agentic_AI/requirements-agentic.txt`
 
 ---
-## 1. High-Level Architecture
+## 1. Architecture
 
-```
-+-----------------+
-| React Chat UI   |  (agentic-purchase-chat-ui/)
-+--------+--------+
-         |
-         v HTTP (image + prompts)
-+--------+--------+
-| Coordinator     |  (Agentic_AI/apps/coordinator)
-|  - Saga S1..S5  |
-|  - Metrics &    |
-|    token logs   |
-+----+-+----+-----+
-     | |    |
- HTTP| |    |HTTP
-     v v    v
- 5 Worker Agents (FastAPI microservices)
-  S1 Vision (8101)       S4 Trust (8104)
-  S2 Intent (8102)       S5 Checkout (8105)
-  S3 Sourcing (8103)
-```
-
-The coordinator owns saga state, timeouts, retries, token budgets, and compensation logic. Each agent is stateless and focused on a single task. Environment variables (`AGENT_*_URL`) let the coordinator decide whether to call agents over HTTP (multi-service) or import them in-process (single binary).
+- Default (in‑process): React UI → FastAPI gateway → LangGraph saga (S1–S5 nodes) calling Python modules in `Agentic_AI/apps/agentX_*`.
+  - Benefits: lower latency, simpler debugging, single venv, reproducible evaluation.
+- Optional microservices: the same agent modules can be exposed as separate FastAPI services (ports 8101–8105) and called over HTTP by the gateway.
+- The gateway owns saga orchestration, budgets, logging, and mock storefront pages. LangServe is provided for programmatic clients and playgrounds.
 
 ---
 ## 2. Repository Layout
 
 ```
 C:\Project
-├── Agentic_AI/                 # Backend (FastAPI)
+├── Agentic_AI/
+│   ├── agentic_graph/           # LangGraph saga (state, nodes, graph, orchestrator, utils)
 │   ├── apps/
-│   │   ├── coordinator/
-│   │   │   ├── main.py        # FastAPI coordinator app (routes, /metrics, mock storefront)
-│   │   │   ├── saga.py        # Saga state machine S1..S5 with timeouts & compensations
-│   │   │   ├── config.py      # Timeouts, token budgets, policy
-│   │   │   ├── metrics.py     # Latency stats + live token counters
-│   │   │   ├── metrics_tokens.py # TokenBudgeter utilities (tokenization, JSONL logging)
-│   │   │   └── clients.py     # HTTP/in-process adapters per agent
-│   │   ├── agent1_vision/     # Vision intake service (Cloud Vision + optional LLM)
-│   │   ├── agent2_intent/     # Intent confirmation (rules + optional LLM chain)
-│   │   ├── agent3_sourcing/   # Offer scoring + LLM reranker with token budget
-│   │   ├── agent4_trust/      # Trust/Safety scoring (heuristics + optional LLM)
-│   │   └── agent5_checkout/   # Mock payment validation & receipt
+│   │   ├── coordinator/         # FastAPI gateway (/saga/*, /playground, /metrics, mock storefront)
+│   │   ├── agent1_vision/       # Vision intake (Cloud Vision + optional LLM)
+│   │   ├── agent2_intent/
+│   │   ├── agent3_sourcing/
+│   │   ├── agent4_trust/
+│   │   └── agent5_checkout/
 │   ├── libs/
-│   │   ├── agents/
-│   │   │   ├── llm.py         # Provider selection (OpenAI/Gemini/Ollama) & config
-│   │   │   └── sourcing_chain.py # Prompt + Pydantic parser + budget-aware reranker
-│   │   └── schemas/models.py  # Shared Pydantic models (Hypothesis, Intent, Offer, Trust, Receipt)
-│   ├── data/mock_catalog.json # Mock e-commerce catalog used by S3 & storefront
-│   ├── logs/eval.log          # JSONL log (saga events + TOKEN events)
-│   ├── requirements-agentic.txt
-│   ├── service-account.json   # Google Cloud Vision credentials (local copy)
-│   └── README.md (backend-focused quickstart)
-├── agentic-purchase-chat-ui/  # Vite + React chat interface (image upload, quick actions, voice)
+│   │   ├── agents/              # LLM helpers (vision refinement, sourcing rerank, trust adjust)
+│   │   └── schemas/models.py    # Pydantic data contracts
+│   ├── data/mock_catalog.json   # Catalog used by S3 & mock storefront
+│   ├── langserve_app.py         # Optional LangServe host (/saga/*/invoke)
+│   ├── logs/                    # eval.log etc.
+│   └── requirements-agentic.txt
+├── evaluation/
+│   ├── dataset.yaml             # Batch evaluation dataset
+│   └── images/                  # Evaluation images
 ├── scripts/
-│   ├── run-all.ps1            # Launch 5 agents + coordinator in separate PowerShell windows
-│   └── eval_report.py         # Summarize logs/eval.log into CSV (saga + token stats)
-└── README.md                  # (this file) Comprehensive repo guide
+│   ├── setup_venv.ps1           # Unified venv bootstrapper
+│   ├── run_eval.py              # Batch runner → logs JSONL
+│   └── eval_report.py           # Summarize logs → CSVs (incl. ranking_metrics.csv)
+├── agentic-purchase-chat-ui/    # React + Vite frontend (optional)
+└── README.md
 ```
 
 ---
 ## 3. Coordinator & Saga Details
 
 ### Saga States (S1–S5)
-| State | Agent (Port) | Task | Default Timeout | Token Budget (est/cap) |
-|-------|--------------|------|-----------------|------------------------|
-| S1_CAPTURE   | Vision (8101)   | Image intake (Google Cloud Vision)         | 12 s | 400 / 800 |
-| S2_CONFIRM   | Intent (8102)   | Disambiguate item/color/qty/budget         | 10 s | 700 / 1000 |
-| S3_SOURCING  | Sourcing (8103) | Score catalog, optional LLM rerank         | 18 s | 1100 / 1500 |
-| S4_TRUST     | Trust (8104)    | Check TLS, domain age, policy hints        | 12 s | 900 / 1200 |
-| S5_CHECKOUT  | Checkout (8105) | Mock payment validation & receipt          | 16 s | 400 / 800 |
+- S1 Capture: Vision intake (Google Cloud Vision + optional LLM refinement)
+- S2 Intent: Extract item/color/qty/budget (rules + optional LLM)
+- S3 Sourcing: Score catalog, run strict+fuzzy branches in parallel, merge, optional LLM rerank
+- S4 Trust: Heuristics + bounded compensation to safer vendors (TopK, price window %, latency cap)
+- S5 Checkout: Mock card validation + idempotent receipt
 
-- **Timeouts & retries**: configured in `config.py` (`TIMEOUTS`).
-- **Compensation**: If Trust returns medium/high risk, coordinator tries the runner-up offer.
-- **Idempotent Checkout**: S5 honors `Idempotency-Key` headers to avoid double-charging.
-
-### Token Efficiency
-- **Budgets** defined in `config.py::TOKEN_BUDGETS` with policy `TOKEN_POLICY` (`warn|truncate|fallback|block`).
-- **TokenBudgeter** (`metrics_tokens.py`) tracks per-run usage, enforces caps, writes JSONL TOKEN events, and updates live counters for `/metrics`.
-- **S3 Reranker** uses the budgeter to pre-check prompt tokens, optionally truncate completions, and charge prompt/completion tokens. Fallback returns heuristic order if policy demands.
-- **Agents** expose `/metrics` returning their local token counters so the coordinator can aggregate system-wide usage.
+Key behaviors
+- Timeouts/retries are enforced at the gateway, with additional S4 compensation latency caps.
+- Idempotency: `/saga/start` accepts `Idempotency-Key` to avoid duplicate charges.
+- Token budgets: `TokenBudgeter` enforces caps and writes TOKEN events; used by the S3 LLM reranker when enabled.
 
 ### Metrics & Logs
 - `GET /metrics` (coordinator) returns:
@@ -136,43 +155,24 @@ Every agent now also exposes `GET /metrics` returning `{ "tokens": {...} }` so t
 ---
 ## 6. Running the System
 
-### Option A: Full Multi-Agent Deployment (Recommended)
-1. Install backend deps:
-   ```powershell
-   cd C:\Project\Agentic_AI
-   python -m venv .venv
-   . .venv\Scripts\activate
-   pip install -r requirements-agentic.txt
-   ```
-2. Configure `.env` (copy `Agentic_AI/.env.example`):
-   - `GOOGLE_APPLICATION_CREDENTIALS=C:\Project\Agentic_AI\service-account.json`
-   - `OPENAI_API_KEY=sk-...` (or relevant provider key)
-   - Optional: `LANGCHAIN_PROVIDER=openai`, `USE_LANGCHAIN_SOURCING=1`, etc.
-3. Launch all services (six PowerShell windows):
-   ```powershell
-   cd C:\Project
-   Set-ExecutionPolicy -Scope Process RemoteSigned
-   .\scripts\run-all.ps1
-   ```
-   Ports: 8000 (coordinator), 8101–8105 (agents). Each window must stay open.
-4. Swagger: `http://127.0.0.1:8000/docs`
-5. Chat UI (optional):
-   ```powershell
-   cd C:\Project\agentic-purchase-chat-ui
-   npm install
-   npm run dev  # http://127.0.0.1:5173
-   ```
-
-### Option B: Single-Process FastAPI (for quick dev)
+### Default (single process)
 ```powershell
-cd C:\Project\Agentic_AI
-. .venv\Scripts\activate
-uvicorn apps.coordinator.main:app --env-file .env --reload
+cd C:\Project
+./scripts/setup_venv.ps1
+./.venv/Scripts/Activate.ps1
+python -m uvicorn Agentic_AI.apps.coordinator.main:app --reload
 ```
-Agents run in-process; token counts and logs still work but there’s only one Python process.
+- Playground: http://127.0.0.1:8000/playground
+- Swagger: http://127.0.0.1:8000/docs
 
-### Option C: Manual Agents (debugging)
-Run each `uvicorn apps.agentX.service:app --port 810X` in its own console if you want to inspect stack traces individually.
+### Optional: LangServe host
+```powershell
+python -m uvicorn Agentic_AI.langserve_app:app --reload
+```
+Playgrounds at `/saga/preview/playground/` and `/saga/start/playground/`; programmatic access via `/saga/*/invoke`.
+
+### Legacy microservices (for distributed setups)
+If you prefer 5 agents + coordinator as separate services, use `scripts/run-all.ps1` and the `AGENT_*_URL` env vars. The gateway will call agents over HTTP.
 
 ---
 ## 7. Logs & Evaluation Workflow
