@@ -1,0 +1,184 @@
+# Expanded evaluation dataset (paths are placeholders).
+# Place images under evaluation/images/ and adjust filenames to your assets.
+
+# ---- Phones (Apple / Google families) ----
+- image: evaluation/images/iphone_15_pro_max.avif
+  user_text: "black, qty 1"
+  expect:
+    brand: Mockazon
+    family: iPhone
+    category: phones
+  preferred_offer_url: https://mock.local/iphone-15-pro-max
+
+- image: evaluation/images/iphone_15_plus.avif
+  user_text: "any color, under $1100"
+  expect:
+    brand: Mockazon
+    family: iPhone
+    category: phones
+  preferred_offer_url: https://mock.local/iphone-15-plus
+
+- image: evaluation/images/iphone_14_pro_refurb.avif
+  user_text: "refurb ok, budget $900"
+  expect:
+    brand: Mockazon
+    family: iPhone
+    category: phones
+  preferred_offer_url: https://mock.local/iphone-14-pro-refurb
+
+- image: evaluation/images/pixel_8_pro.avif
+  user_text: "pro model, fast shipping"
+  expect:
+    brand: GearHouse
+    family: Pixel
+    category: phones
+  preferred_offer_url: https://mock.local/pixel-8-pro
+
+- image: evaluation/images/pixel_8.avif
+  user_text: "compact size"
+  expect:
+    brand: GearHouse
+    family: Pixel
+    category: phones
+  preferred_offer_url: https://mock.local/pixel-8
+
+- image: evaluation/images/pixel_fold.avif
+  user_text: "foldable"
+  expect:
+    brand: GearHouse
+    family: Pixel
+    category: phones
+  preferred_offer_url: https://mock.local/pixel-fold
+
+# ---- Pens (Pilot / Sharpie / BIC) ----
+- image: evaluation/images/pilot_g2_pack.avif
+  user_text: "black gel, under $10"
+  expect:
+    brand: Shoply
+    family: G2
+    category: pens
+  preferred_offer_url: https://mock.local/pilot-g2-pack
+
+- image: evaluation/images/pilot_g2_colors.avif
+  user_text: "color pack"
+  expect:
+    brand: Shoply
+    family: G2
+    category: pens
+  preferred_offer_url: https://mock.local/pilot-g2-colors
+
+- image: evaluation/images/sharpie_s_gel.jpg
+  user_text: "0.7mm gel"
+  expect:
+    brand: MegaBuy
+    family: S-Gel
+    category: pens
+  preferred_offer_url: https://mock.local/sharpie-s-gel
+
+# (image missing in evaluation/images; add it or update this entry)
+# - image: evaluation/images/bic_intensity.jpg
+  user_text: "fineliner set"
+  expect:
+    brand: MegaBuy
+    family: Intensity
+    category: pens
+  preferred_offer_url: https://mock.local/bic-intensity
+
+# ---- Shoes (Nike / Adidas / New Balance) ----
+- image: evaluation/images/nike_pegasus_40.avif
+  user_text: "daily trainer"
+  expect:
+    brand: Mockazon
+    family: Pegasus
+    category: shoes
+  preferred_offer_url: https://mock.local/pegasus-40
+
+- image: evaluation/images/nike_infinityrn_4.jpg
+  user_text: "stability"
+  expect:
+    brand: Mockazon
+    family: InfinityRN
+    category: shoes
+  preferred_offer_url: https://mock.local/nike-infinity-run
+
+- image: evaluation/images/adidas_ultraboost_light.avif
+  user_text: "lightweight"
+  expect:
+    brand: Shoply
+    family: Ultraboost
+    category: shoes
+  preferred_offer_url: https://mock.local/ultraboost-light
+
+- image: evaluation/images/new_balance_1080v13.jpg
+  user_text: "plush cushioning"
+  expect:
+    brand: GearHouse
+    family: 1080
+    category: shoes
+  preferred_offer_url: https://mock.local/newbalance-1080
+
+# ---- Bottles (Hydro Flask / Contigo) ----
+- image: evaluation/images/hydroflask_32oz.avif
+  user_text: "wide mouth"
+  expect:
+    brand: Mockazon
+    family: Hydro Flask
+    category: bottles
+  preferred_offer_url: https://mock.local/hydroflask-32oz
+
+- image: evaluation/images/hydroflask_24oz
+  user_text: "standard mouth"
+  expect:
+    brand: Mockazon
+    family: Hydro Flask
+    category: bottles
+  preferred_offer_url: https://mock.local/hydroflask-24oz
+
+- image: evaluation/images/contigo_autoseal_24oz.jpg
+  user_text: "autoseal stainless"
+  expect:
+    brand: GearHouse
+    family: Contigo
+    category: bottles
+  preferred_offer_url: https://mock.local/contigo-chill
+
+# ---- Laptops (Dell / Apple / Lenovo) ----
+- image: evaluation/images/dell_xps_15_2024.avif
+  user_text: "15 inch OLED"
+  expect:
+    brand: Mockazon
+    family: XPS
+    category: laptops
+  preferred_offer_url: https://mock.local/dell-xps-15
+
+- image: evaluation/images/dell_xps_13_plus.avif
+  user_text: "13 inch ultrabook"
+  expect:
+    brand: TechDirect
+    family: XPS
+    category: laptops
+  preferred_offer_url: https://mock.local/dell-xps-13
+
+- image: evaluation/images/macbook_pro_14_m3.jpg
+  user_text: "Pro 14"
+  expect:
+    brand: Mockazon
+    family: MacBook Pro
+    category: laptops
+  preferred_offer_url: https://mock.local/macbook-pro-14
+
+- image: evaluation/images/macbook_air_m3.jpg
+  user_text: "Air 13"
+  expect:
+    brand: Mockazon
+    family: MacBook Air
+    category: laptops
+  preferred_offer_url: https://mock.local/macbook-air-m3
+
+- image: evaluation/images/lenovo_yoga_9i.jpg
+  user_text: "2-in-1 with pen"
+  expect:
+    brand: TechDirect
+    family: Yoga
+    category: laptops
+  preferred_offer_url: https://mock.local/lenovo-yoga-9i

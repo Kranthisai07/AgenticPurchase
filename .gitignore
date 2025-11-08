@@ -1,0 +1,13 @@
+# Python venvs
+/.venv/
+/Agentic_AI/.venv/
+
+# Node
+/agentic-purchase-chat-ui/node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Logs
+/Agentic_AI/logs/*.log
