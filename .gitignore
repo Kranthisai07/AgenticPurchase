@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+backend/.venv/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Logs
+logs/
+*.log
+backend/logs/
+
+# Secrets & Config
+.env
+.env.local
+*.env
+service-account.json
+backend/service-account.json
+**/*service-account.json
+
+# Datasets & Artifacts (Large/Generated files)
+dataset/
+backend/data/*.jsonl
+backend/data/price_refs.json
+*.tar
+*.gz
+
+# IDE
+.vscode/
+.idea/
+dataset_tmp/
