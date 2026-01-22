@@ -13,7 +13,7 @@ Research sandbox for an **LLM-first purchase assistant** built on LangGraph, Ope
 
 ```
 +--------------------------------------------------------------------------+
-| React / Vite UI (agentic-purchase-chat-ui)                               |
+| React / Vite UI (frontend)                                               |
 |  - image upload  - chips/prompts  - trust badge  - inline checkout       |
 +--------------+-----------------------------------------------------------+
                | HTTP (image + metadata)
@@ -95,16 +95,25 @@ C:\Project
 |   +-- libs/
 |   |   +-- agents/             # LangChain helpers (vision/intents/sourcing/trust)
 |   |   +-- providers/          # abo_catalog search + price ref utilities
-|   +-- logs/eval.log           # JSONL saga + token events
+|   +-- logs/                   # JSONL saga + token events (eval.log)
+|   +-- tests/                  # Unit tests for agents and graph
 |   +-- requirements-agentic.txt
-+-- frontend/   # React/Vite chat client with trust badges
-+-- dataset/                    # Downloaded ABO raw data + /abo-images mount
++-- frontend/                   # React/Vite chat client with trust badges
+|   +-- src/                    # React components and app logic
+|   +-- dist/                   # Production build output
+|   +-- package.json
++-- evaluation/                 # Test dataset and evaluation images
+|   +-- dataset.yaml            # Labeled test cases with expected outcomes
+|   +-- images/                 # Test images for evaluation runs
 +-- scripts/
-|   +-- prepare_abo_offers.py
-|   +-- build_price_refs_from_offers.py
-|   +-- eval_report.py
-|   +-- run-all.ps1
-+-- docs/                       # PROJECT_SUMMARY, methodology, evaluations
+|   +-- prepare_abo_offers.py   # Generate structured offers from ABO metadata
+|   +-- build_price_refs_from_offers.py  # Build Z-score references
+|   +-- eval_report.py          # Generate evaluation metrics and reports
+|   +-- run_eval.py             # Batch evaluation driver
+|   +-- run-all.ps1             # Launch all microservices (legacy mode)
+|   +-- setup_venv.ps1          # Virtual environment setup helper
++-- docs/
+|   +-- PROJECT_SUMMARY.md      # Detailed project documentation
 ```
 
 ---
