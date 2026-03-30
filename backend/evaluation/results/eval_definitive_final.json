@@ -1,0 +1,60 @@
+{
+  "code_version": "post_security_fixes",
+  "test_suite": "53/53",
+  "timestamp": "2026-03-24T06:49:26Z",
+  "label": "DEFINITIVE FINAL — all security fixes applied, 53/53 tests passing",
+  "source_file": "eval_results_multimodal_20260324T064926Z.json",
+
+  "test_suite_result": {
+    "total": 53,
+    "passed": 53,
+    "failed": 0
+  },
+
+  "intent_modeling": {
+    "combined_weighted_f1": 0.7967,
+    "image_mode_f1": 0.8667,
+    "text_mode_f1": 0.7500,
+    "image_mode_n": 20,
+    "text_mode_n": 30,
+    "brand_accuracy": "18/20",
+    "category_accuracy": "49/50",
+    "product_type_accuracy": "30/50",
+    "note": "F1 computed as field-level accuracy (all required fields correct = 1.0). Image mode: brand+category+product_type. Text mode: category+product_type."
+  },
+
+  "sourcing_quality": {
+    "ndcg_at_3": 0.6247,
+    "mrr": 0.7223,
+    "avg_offers_returned": 9.8,
+    "relevance_criterion": "brand whole-word + product type (strict)"
+  },
+
+  "trust_evaluation_in_pipeline": {
+    "note": "Main-eval trust metrics are trivially perfect — eBay/SerpApi return no counterfeit listings in practice. See trust_definitive_final.json for injection-method trust metrics.",
+    "precision": 0.0,
+    "recall": 0.0,
+    "vvr": 1.0,
+    "fvdr": 0.0,
+    "n_offers_evaluated": 481,
+    "n_authentic": 481,
+    "n_suspicious": 0
+  },
+
+  "system_performance": {
+    "avg_latency_image_s": 23.4,
+    "avg_latency_text_s": 20.5,
+    "avg_latency_overall_s": 21.7,
+    "avg_tokens_per_run": 14558,
+    "avg_cost_per_run_usd": 0.094626,
+    "cost_rate_per_token": 0.0000065,
+    "total_evaluation_cost_usd": 4.7313
+  },
+
+  "saga_evaluation": {
+    "total_queries": 50,
+    "succeeded": 50,
+    "failed": 0,
+    "query_failures": []
+  }
+}

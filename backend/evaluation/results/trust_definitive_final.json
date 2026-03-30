@@ -1,0 +1,41 @@
+{
+  "code_version": "post_security_fixes",
+  "test_suite": "53/53",
+  "timestamp": "2026-03-24T06:44:29Z",
+  "label": "DEFINITIVE FINAL — injection method, 115 synthetic offers, all security fixes applied",
+  "source_file": "trust_injection_results.json",
+
+  "trust_metrics": {
+    "precision": 1.0,
+    "recall": 0.96,
+    "vvr": 0.9302,
+    "fvdr": 0.0,
+    "vvr_note": "VVR computed within injection eval only (TN/(TN+FN)). Main-eval VVR=1.00 is trivially true and does not reflect detection capability.",
+    "n_evaluated": 115,
+    "n_suspicious": 75,
+    "n_authentic": 40,
+    "tp": 72,
+    "tn": 40,
+    "fp": 0,
+    "fn": 3
+  },
+
+  "breakdown_by_injection_type": {
+    "replica_keyword": {"detected": 15, "total": 15, "note": "Session 1 pattern matching"},
+    "novel_vocabulary": {"detected": 15, "total": 15, "note": "LLM-only; 1/15 contains 'replica' per spec"},
+    "price_anomaly": {"detected": 12, "total": 15},
+    "brand_mismatch": {"detected": 15, "total": 15},
+    "combined": {"detected": 15, "total": 15},
+    "authentic_controls": {"cleared": 40, "total": 40}
+  },
+
+  "llm_usage": {
+    "calls": 115,
+    "input_tokens": 155302,
+    "output_tokens": 6956,
+    "estimated_cost_usd": 0.8809,
+    "cost_rate_per_token": 0.0000065
+  },
+
+  "duration_s": 176.9
+}

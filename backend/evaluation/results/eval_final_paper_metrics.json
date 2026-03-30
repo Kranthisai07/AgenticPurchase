@@ -1,0 +1,70 @@
+{
+  "title": "Agentic Purchase — Final Paper Metrics",
+  "evaluation_date": "2026-03-24",
+  "timestamp": "20260324T053450Z",
+  "source_eval_file": "eval_results_multimodal_20260324T053450Z.json",
+  "queries": {
+    "total": 50,
+    "image_assisted": 20,
+    "text_only": 30,
+    "failures": 0
+  },
+  "intent_modeling": {
+    "note": "Macro-average of per-field binary accuracy scores (not a true F1). precision=recall=F1 identically in eval_intent.py.",
+    "combined_weighted_f1": 0.8067,
+    "image_mode_f1": 0.8667,
+    "text_mode_f1": 0.7667,
+    "brand_accuracy": {
+      "correct": 18,
+      "total_image_queries": 20,
+      "rate": 0.90,
+      "note": "Denominator is image queries only (brand not extracted for text-only mode)"
+    },
+    "category_accuracy": {
+      "correct": 49,
+      "total": 50,
+      "rate": 0.98
+    },
+    "product_type_accuracy": {
+      "correct": 31,
+      "total": 50,
+      "rate": 0.62
+    }
+  },
+  "sourcing_quality": {
+    "note": "Strict relevance criterion: brand as whole-word token AND product-type word both required. Replaces circular criterion (brand substring in title, inflated to NDCG=0.97). NDCG/MRR recomputed from this fresh run — saved JSON from prior run lacked offer-level data.",
+    "ndcg_at_3": 0.6476,
+    "mrr": 0.7430,
+    "avg_offers_returned": 9.9
+  },
+  "trust_evaluation_main_eval": {
+    "note": "TRIVIALLY TRUE — eBay returns no counterfeit listings in production search results. FN=0 by construction, so VVR=TN/(TN+0)=1.00. Precision/Recall are 0.0 because no ground-truth suspicious offers exist. Use trust_injection_results.json for meaningful trust capability metrics.",
+    "precision": 0.0,
+    "recall": 0.0,
+    "vvr": 1.0,
+    "fvdr": 0.0,
+    "offers_evaluated": 486,
+    "authentic": 486,
+    "suspicious_high_risk": 0,
+    "tp": 0,
+    "tn": 486,
+    "fp": 0,
+    "fn": 0
+  },
+  "system_performance": {
+    "avg_latency_image_s": 20.5,
+    "avg_latency_text_s": 18.5,
+    "avg_latency_overall_s": 19.3,
+    "avg_tokens_per_run": 14703,
+    "avg_cost_per_run_usd": 0.095571,
+    "cost_formula": "blended rate $0.0000065/token (85% input @$5/1M + 15% output @$15/1M)",
+    "total_evaluation_cost_usd": 4.7786
+  },
+  "pytest": {
+    "passed": 52,
+    "failed": 1,
+    "total": 53,
+    "failing_test": "test_poor_sellers_score_high_risk",
+    "failure_note": "Pre-existing: Session 2 LLM returns AUTHENTIC for feedback_score=10 seller; TrustLevel resolves to MEDIUM_RISK not HIGH_RISK. Not introduced by current changes."
+  }
+}

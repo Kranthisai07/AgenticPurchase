@@ -1,0 +1,26 @@
+{
+  "timestamp": "20260324T020109Z",
+  "n_queries": 50,
+  "n_success": 50,
+  "intent": {
+    "f1": 0.52,
+    "precision": 0.52,
+    "recall": 0.52
+  },
+  "sourcing": {
+    "ndcg_at_3": 0.8753,
+    "mrr": 0.88
+  },
+  "trust": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "vvr": 1.0,
+    "fvdr": 0.0
+  },
+  "performance": {
+    "avg_latency_s": 18.11,
+    "avg_tokens": 4849.7,
+    "avg_cost_usd": 0.024248,
+    "total_cost_usd": 1.2124
+  }
+}

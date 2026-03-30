@@ -1,0 +1,805 @@
+{
+  "code_version": "post_security_fixes",
+  "ablation_config": "C",
+  "test_suite": "53/53",
+  "timestamp": "20260330T005330Z",
+  "intent": {
+    "f1": 0.49,
+    "image_f1": 0.4,
+    "text_f1": 0.55
+  },
+  "sourcing": {
+    "ndcg_at_3": 0.6304,
+    "mrr": 0.7267
+  },
+  "trust_in_pipeline": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "vvr": 1.0,
+    "fvdr": 0.0
+  },
+  "trust_injection": {
+    "tp": 72,
+    "tn": 40,
+    "fp": 0,
+    "fn": 3,
+    "precision": 1.0,
+    "recall": 0.96,
+    "vvr": 0.9302,
+    "fvdr": 0.0,
+    "n_evaluated": 115,
+    "n_suspicious": 75,
+    "n_authentic": 40,
+    "replica_detected": 15,
+    "novel_detected": 15,
+    "price_detected": 12,
+    "brand_detected": 15,
+    "combined_detected": 15,
+    "authentic_cleared": 40,
+    "llm_calls": 115,
+    "estimated_cost_usd": 0.8806,
+    "duration_s": 188.0
+  },
+  "performance": {
+    "avg_latency_s": 13.8,
+    "avg_tokens": 12936.5,
+    "avg_cost_usd": 0.084087,
+    "total_cost_usd": 4.2044
+  },
+  "saga": {
+    "succeeded": 50,
+    "failed": 0
+  },
+  "per_query": [
+    {
+      "query_id": "fw-01",
+      "query_text": "Nike Air Max running shoes size 10",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 13234.0,
+      "total_tokens": 13971,
+      "intent_output": {
+        "category": "footwear",
+        "primary_query": "Nike Air Max running shoes size 10 Nike Air Max running shoes size 10",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "fw-02",
+      "query_text": "Adidas Ultraboost white sneakers",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 13516.0,
+      "total_tokens": 13980,
+      "intent_output": {
+        "category": "footwear",
+        "primary_query": "Adidas Ultraboost white sneakers Adidas Ultraboost white sneakers",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "fw-03",
+      "query_text": "New Balance 990 grey men's",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13812.0,
+      "total_tokens": 14019,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "New Balance 990 grey men's New Balance 990 grey men's",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "fw-04",
+      "query_text": "Jordan 1 Retro High OG black toe",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 12282.0,
+      "total_tokens": 14056,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Jordan 1 Retro High OG black toe Jordan 1 Retro High OG black toe",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "fw-05",
+      "query_text": "Timberland 6 inch waterproof boots",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 14843.0,
+      "total_tokens": 13984,
+      "intent_output": {
+        "category": "footwear",
+        "primary_query": "Timberland 6 inch waterproof boots Timberland 6 inch waterproof boots",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "fw-06",
+      "query_text": "Vans Old Skool black white",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 14141.0,
+      "total_tokens": 13980,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Vans Old Skool black white Vans Old Skool black white",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "fw-07",
+      "query_text": "Converse Chuck Taylor All Star",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 17094.0,
+      "total_tokens": 13937,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Converse Chuck Taylor All Star Converse Chuck Taylor All Star",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "fw-08",
+      "query_text": "Puma RS-X bold sneakers",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13718.0,
+      "total_tokens": 13988,
+      "intent_output": {
+        "category": "footwear",
+        "primary_query": "Puma RS-X bold sneakers Puma RS-X bold sneakers",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "fw-09",
+      "query_text": "Reebok Classic Leather white",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 6969.0,
+      "total_tokens": 6957,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Reebok Classic Leather white Reebok Classic Leather white",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "fw-10",
+      "query_text": "Asics Gel-Nimbus running shoe",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13031.0,
+      "total_tokens": 13980,
+      "intent_output": {
+        "category": "footwear",
+        "primary_query": "Asics Gel-Nimbus running shoe Asics Gel-Nimbus running shoe",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "el-01",
+      "query_text": "Apple AirPods Pro 2nd generation",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 13204.0,
+      "total_tokens": 13964,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Apple AirPods Pro 2nd generation Apple AirPods Pro 2nd generation",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "el-02",
+      "query_text": "Sony WH-1000XM5 headphones",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 18312.0,
+      "total_tokens": 14036,
+      "intent_output": {
+        "category": "electronics",
+        "primary_query": "Sony WH-1000XM5 headphones Sony WH-1000XM5 headphones",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "el-03",
+      "query_text": "Samsung Galaxy S24 unlocked",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 15984.0,
+      "total_tokens": 14008,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Samsung Galaxy S24 unlocked Samsung Galaxy S24 unlocked",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "el-04",
+      "query_text": "iPad Air 5th generation 64GB",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 14953.0,
+      "total_tokens": 14109,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "iPad Air 5th generation 64GB iPad Air 5th generation 64GB",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "el-05",
+      "query_text": "Logitech MX Master 3 mouse",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13500.0,
+      "total_tokens": 14031,
+      "intent_output": {
+        "category": "electronics",
+        "primary_query": "Logitech MX Master 3 mouse Logitech MX Master 3 mouse",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "el-06",
+      "query_text": "Anker 65W USB-C charger",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13719.0,
+      "total_tokens": 13990,
+      "intent_output": {
+        "category": "electronics",
+        "primary_query": "Anker 65W USB-C charger Anker 65W USB-C charger",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "el-07",
+      "query_text": "JBL Flip 6 portable speaker",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 13219.0,
+      "total_tokens": 14001,
+      "intent_output": {
+        "category": "electronics",
+        "primary_query": "JBL Flip 6 portable speaker JBL Flip 6 portable speaker",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "el-08",
+      "query_text": "GoPro Hero 12 Black",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 14203.0,
+      "total_tokens": 14049,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "GoPro Hero 12 Black GoPro Hero 12 Black",
+        "brand": ""
+      },
+      "n_ranked_offers": 0
+    },
+    {
+      "query_id": "el-09",
+      "query_text": "Garmin Forerunner 265 GPS watch",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13829.0,
+      "total_tokens": 14049,
+      "intent_output": {
+        "category": "watches",
+        "primary_query": "Garmin Forerunner 265 GPS watch Garmin Forerunner 265 GPS watch",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "el-10",
+      "query_text": "Kindle Paperwhite 11th gen",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 14031.0,
+      "total_tokens": 14062,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Kindle Paperwhite 11th gen Kindle Paperwhite 11th gen",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "wa-01",
+      "query_text": "Casio G-Shock GA-2100 black",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 13829.0,
+      "total_tokens": 14057,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Casio G-Shock GA-2100 black Casio G-Shock GA-2100 black",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "wa-02",
+      "query_text": "Seiko 5 Sports automatic watch",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 12875.0,
+      "total_tokens": 13978,
+      "intent_output": {
+        "category": "watches",
+        "primary_query": "Seiko 5 Sports automatic watch Seiko 5 Sports automatic watch",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "wa-03",
+      "query_text": "Citizen Eco-Drive titanium",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 17921.0,
+      "total_tokens": 13965,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Citizen Eco-Drive titanium Citizen Eco-Drive titanium",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "wa-04",
+      "query_text": "Fossil Gen 6 smartwatch",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 14750.0,
+      "total_tokens": 14018,
+      "intent_output": {
+        "category": "watches",
+        "primary_query": "Fossil Gen 6 smartwatch Fossil Gen 6 smartwatch",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "wa-05",
+      "query_text": "Timex Weekender 40mm",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 13203.0,
+      "total_tokens": 13967,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Timex Weekender 40mm Timex Weekender 40mm",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "wa-06",
+      "query_text": "Orient Bambino classic dress watch",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13313.0,
+      "total_tokens": 13997,
+      "intent_output": {
+        "category": "watches",
+        "primary_query": "Orient Bambino classic dress watch Orient Bambino classic dress watch",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "wa-07",
+      "query_text": "Invicta Pro Diver 8926OB",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 20828.0,
+      "total_tokens": 0,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Invicta Pro Diver 8926OB Invicta Pro Diver 8926OB",
+        "brand": ""
+      },
+      "n_ranked_offers": 0
+    },
+    {
+      "query_id": "wa-08",
+      "query_text": "MVMT Boulevard minimalist watch",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13984.0,
+      "total_tokens": 13952,
+      "intent_output": {
+        "category": "watches",
+        "primary_query": "MVMT Boulevard minimalist watch MVMT Boulevard minimalist watch",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "wa-09",
+      "query_text": "Daniel Wellington Classic 40mm",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 15047.0,
+      "total_tokens": 13938,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Daniel Wellington Classic 40mm Daniel Wellington Classic 40mm",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "wa-10",
+      "query_text": "Hamilton Khaki Field automatic",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 14656.0,
+      "total_tokens": 13953,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Hamilton Khaki Field automatic Hamilton Khaki Field automatic",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-01",
+      "query_text": "Levi's 501 original fit jeans",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 16172.0,
+      "total_tokens": 13978,
+      "intent_output": {
+        "category": "apparel",
+        "primary_query": "Levi's 501 original fit jeans Levi's 501 original fit jeans",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-02",
+      "query_text": "Patagonia Better Sweater fleece",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 15360.0,
+      "total_tokens": 13945,
+      "intent_output": {
+        "category": "apparel",
+        "primary_query": "Patagonia Better Sweater fleece Patagonia Better Sweater fleece",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-03",
+      "query_text": "The North Face Nuptse jacket",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 13906.0,
+      "total_tokens": 14011,
+      "intent_output": {
+        "category": "apparel",
+        "primary_query": "The North Face Nuptse jacket The North Face Nuptse jacket",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-04",
+      "query_text": "Champion reverse weave hoodie",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13406.0,
+      "total_tokens": 13935,
+      "intent_output": {
+        "category": "apparel",
+        "primary_query": "Champion reverse weave hoodie Champion reverse weave hoodie",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-05",
+      "query_text": "Ralph Lauren Polo classic fit shirt",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 16907.0,
+      "total_tokens": 13998,
+      "intent_output": {
+        "category": "apparel",
+        "primary_query": "Ralph Lauren Polo classic fit shirt Ralph Lauren Polo classic fit shirt",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-06",
+      "query_text": "Arc'teryx Atom LT hoody",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13906.0,
+      "total_tokens": 13989,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Arc'teryx Atom LT hoody Arc'teryx Atom LT hoody",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-07",
+      "query_text": "Carhartt WIP active jacket",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13610.0,
+      "total_tokens": 13985,
+      "intent_output": {
+        "category": "apparel",
+        "primary_query": "Carhartt WIP active jacket Carhartt WIP active jacket",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-08",
+      "query_text": "Uniqlo Ultra Light Down jacket",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 13313.0,
+      "total_tokens": 14018,
+      "intent_output": {
+        "category": "apparel",
+        "primary_query": "Uniqlo Ultra Light Down jacket Uniqlo Ultra Light Down jacket",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-09",
+      "query_text": "Columbia Omni-Heat thermal shirt",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 14312.0,
+      "total_tokens": 13988,
+      "intent_output": {
+        "category": "apparel",
+        "primary_query": "Columbia Omni-Heat thermal shirt Columbia Omni-Heat thermal shirt",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "ap-10",
+      "query_text": "Fjallraven Kanken mini backpack",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 15766.0,
+      "total_tokens": 14030,
+      "intent_output": {
+        "category": "apparel",
+        "primary_query": "Fjallraven Kanken mini backpack Fjallraven Kanken mini backpack",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "hg-01",
+      "query_text": "Instant Pot Duo 7-in-1 pressure cooker",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 16891.0,
+      "total_tokens": 14043,
+      "intent_output": {
+        "category": "home_goods",
+        "primary_query": "Instant Pot Duo 7-in-1 pressure cooker Instant Pot Duo 7-in-1 pressure cooker",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "hg-02",
+      "query_text": "Dyson V15 Detect cordless vacuum",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 14109.0,
+      "total_tokens": 13969,
+      "intent_output": {
+        "category": "home_goods",
+        "primary_query": "Dyson V15 Detect cordless vacuum Dyson V15 Detect cordless vacuum",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "hg-03",
+      "query_text": "Vitamix E310 blender",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 10656.0,
+      "total_tokens": 9850,
+      "intent_output": {
+        "category": "home_goods",
+        "primary_query": "Vitamix E310 blender Vitamix E310 blender",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "hg-04",
+      "query_text": "Le Creuset dutch oven 5.5 qt",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 14438.0,
+      "total_tokens": 14085,
+      "intent_output": {
+        "category": "home_goods",
+        "primary_query": "Le Creuset dutch oven 5.5 qt Le Creuset dutch oven 5.5 qt",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "hg-05",
+      "query_text": "Nespresso Vertuo Next coffee maker",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 14110.0,
+      "total_tokens": 13990,
+      "intent_output": {
+        "category": "home_goods",
+        "primary_query": "Nespresso Vertuo Next coffee maker Nespresso Vertuo Next coffee maker",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "hg-06",
+      "query_text": "Philips Hue starter kit white",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13015.0,
+      "total_tokens": 13936,
+      "intent_output": {
+        "category": "general",
+        "primary_query": "Philips Hue starter kit white Philips Hue starter kit white",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "hg-07",
+      "query_text": "iRobot Roomba j7 robot vacuum",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 16282.0,
+      "total_tokens": 14034,
+      "intent_output": {
+        "category": "home_goods",
+        "primary_query": "iRobot Roomba j7 robot vacuum iRobot Roomba j7 robot vacuum",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "hg-08",
+      "query_text": "Cuisinart 14-cup food processor",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 13109.0,
+      "total_tokens": 14064,
+      "intent_output": {
+        "category": "home_goods",
+        "primary_query": "Cuisinart 14-cup food processor Cuisinart 14-cup food processor",
+        "brand": ""
+      },
+      "n_ranked_offers": 5
+    },
+    {
+      "query_id": "hg-09",
+      "query_text": "KitchenAid stand mixer tilt head",
+      "has_image": true,
+      "success": true,
+      "error": null,
+      "duration_ms": 797.0,
+      "total_tokens": 0,
+      "intent_output": {
+        "category": "home_goods",
+        "primary_query": "KitchenAid stand mixer tilt head KitchenAid stand mixer tilt head",
+        "brand": ""
+      },
+      "n_ranked_offers": 0
+    },
+    {
+      "query_id": "hg-10",
+      "query_text": "Ember temperature control mug",
+      "has_image": false,
+      "success": true,
+      "error": null,
+      "duration_ms": 719.0,
+      "total_tokens": 0,
+      "intent_output": {
+        "category": "home_goods",
+        "primary_query": "Ember temperature control mug Ember temperature control mug",
+        "brand": ""
+      },
+      "n_ranked_offers": 0
+    }
+  ]
+}

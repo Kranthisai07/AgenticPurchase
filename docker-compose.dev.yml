@@ -1,0 +1,107 @@
+services:
+  # ── Infrastructure ───────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: agentic_purchase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── Backend ──────────────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      target: development
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/agentic_purchase
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ── Frontend ─────────────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      target: development
+    env_file:
+      - frontend/.env
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+    depends_on:
+      - backend
+
+  # ── Stripe CLI ───────────────────────────────────────────────────────────────
+  # Forwards Stripe webhook events to the local backend.
+  #
+  # FIRST-TIME SETUP (run once):
+  #   docker compose -f docker-compose.dev.yml run --rm stripe-cli-setup
+  #   → Prints the whsec_... signing secret. Copy it into .env as STRIPE_WEBHOOK_SECRET.
+  #
+  # Then start the listener normally with:
+  #   docker compose -f docker-compose.dev.yml up stripe-cli
+  stripe-cli:
+    image: stripe/stripe-cli:latest
+    environment:
+      STRIPE_API_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_DEVICE_NAME: agentic-purchase-dev
+    command: >
+      listen
+      --forward-to http://backend:8000/webhooks/stripe
+      --events payment_intent.succeeded,payment_intent.payment_failed,payment_intent.canceled,charge.dispute.created,charge.refunded
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: on-failure:3
+
+  # One-shot service: prints the CLI webhook signing secret and exits.
+  # Run: docker compose -f docker-compose.dev.yml run --rm stripe-cli-setup
+  stripe-cli-setup:
+    image: stripe/stripe-cli:latest
+    environment:
+      STRIPE_API_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_DEVICE_NAME: agentic-purchase-dev
+    command: listen --print-secret
+    profiles:
+      - setup
+
+volumes:
+  postgres_data:

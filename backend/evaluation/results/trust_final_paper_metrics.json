@@ -1,0 +1,79 @@
+{
+  "title": "Agentic Purchase — Trust Injection Evaluation — Final Paper Metrics",
+  "evaluation_date": "2026-03-24",
+  "timestamp": "20260324T052138Z",
+  "source_file": "trust_injection_results.json",
+  "method": "injection",
+  "note": "115 synthetic labeled offers. 75 suspicious (5 types × 15 each), 40 authentic controls. One LLM call per offer (Session 2). VVR here is meaningful; main-eval VVR=1.00 is trivially true (eBay returns no counterfeits).",
+  "offer_set": {
+    "total": 115,
+    "suspicious": 75,
+    "authentic": 40,
+    "types": {
+      "replica_keyword": 15,
+      "novel_vocabulary": 15,
+      "price_anomaly": 15,
+      "brand_mismatch": 15,
+      "combined": 15
+    }
+  },
+  "confusion_matrix": {
+    "tp": 71,
+    "tn": 40,
+    "fp": 0,
+    "fn": 4
+  },
+  "metrics": {
+    "precision": 1.0,
+    "recall": 0.9467,
+    "vvr": 0.9091,
+    "vvr_label": "injection eval VVR = TN / (TN + FN) = 40 / (40 + 4)",
+    "fvdr": 0.0
+  },
+  "breakdown": {
+    "replica_keyword": {
+      "detected": 15,
+      "total": 15,
+      "note": "Session 1 pattern match (_REPLICA_PATTERNS regex)"
+    },
+    "novel_vocabulary": {
+      "detected": 15,
+      "total": 15,
+      "note": "LLM independent reasoning only; 1/15 contains 'replica' (detectable by Session 1 too — not pure LLM test)"
+    },
+    "price_anomaly": {
+      "detected": 11,
+      "total": 15
+    },
+    "brand_mismatch": {
+      "detected": 15,
+      "total": 15
+    },
+    "combined": {
+      "detected": 15,
+      "total": 15
+    },
+    "authentic_controls": {
+      "cleared": 40,
+      "total": 40
+    }
+  },
+  "llm_usage": {
+    "calls": 115,
+    "input_tokens": 155302,
+    "output_tokens": 6993,
+    "estimated_cost_usd": 0.8814,
+    "cost_formula": "anthropic claude-sonnet pricing"
+  },
+  "duration_s": 162.8,
+  "prompt_engineering": {
+    "session2_changes": [
+      "Title-first ordering in user prompt (before Session 1 signals)",
+      "Vocabulary category descriptions in system prompt (quality-tier grades, manufacturing provenance, market-channel terms, similarity language)",
+      "Two-example few-shot: Grade 5A Sony -> SUSPICIOUS, Sony Genuine Authentic -> AUTHENTIC",
+      "Calibration block: explicit NOT-flag rules for 'genuine'/'authentic' assertions alone"
+    ],
+    "novel_vocabulary_improvement": "1/15 (6.7%) -> 15/15 (100%)",
+    "precision_maintained": true
+  }
+}
