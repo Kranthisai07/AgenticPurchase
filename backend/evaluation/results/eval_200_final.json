@@ -1,0 +1,83 @@
+{
+  "timestamp": "20260403T032705Z",
+  "n_queries": 179,
+  "n_failed": 21,
+  "n_image": 59,
+  "n_text": 120,
+  "intent": {
+    "f1": 0.7499,
+    "image_f1": 0.8174,
+    "text_f1": 0.7167,
+    "precision": 0.7499,
+    "recall": 0.7499,
+    "n_correct_category": 157,
+    "n_correct_product_type": 107,
+    "brand_extractable": 56,
+    "brand_correct": 50
+  },
+  "sourcing": {
+    "ndcg_at_3": 0.6548,
+    "mrr": 0.6808,
+    "avg_offers_returned": 4.66
+  },
+  "trust": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "vvr": 1.0,
+    "fvdr": 0.0,
+    "tp": 0,
+    "tn": 1666,
+    "fp": 0,
+    "fn": 0
+  },
+  "performance": {
+    "avg_latency_s": 19.81,
+    "avg_img_latency_s": 20.17,
+    "avg_txt_latency_s": 19.63,
+    "avg_tokens": 13980.6,
+    "avg_cost_usd": 0.090874,
+    "total_cost_usd": 16.2665
+  },
+  "by_category": {
+    "footwear": {
+      "n": 34,
+      "intent_f1": 0.7892,
+      "ndcg_at_3": 0.4617,
+      "mrr": 0.5059,
+      "trust_precision": 0.0,
+      "trust_recall": 0.0
+    },
+    "electronics": {
+      "n": 37,
+      "intent_f1": 0.6892,
+      "ndcg_at_3": 0.524,
+      "mrr": 0.536,
+      "trust_precision": 0.0,
+      "trust_recall": 0.0
+    },
+    "watches": {
+      "n": 39,
+      "intent_f1": 0.765,
+      "ndcg_at_3": 0.9623,
+      "mrr": 0.9872,
+      "trust_precision": 0.0,
+      "trust_recall": 0.0
+    },
+    "apparel": {
+      "n": 33,
+      "intent_f1": 0.8384,
+      "ndcg_at_3": 0.6744,
+      "mrr": 0.697,
+      "trust_precision": 0.0,
+      "trust_recall": 0.0
+    },
+    "home_goods": {
+      "n": 36,
+      "intent_f1": 0.6759,
+      "ndcg_at_3": 0.6208,
+      "mrr": 0.6481,
+      "trust_precision": 0.0,
+      "trust_recall": 0.0
+    }
+  }
+}

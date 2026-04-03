@@ -1,0 +1,19 @@
+{
+  "dataset": "200-query multimodal (80 image / 120 text)",
+  "categories": 5,
+  "queries_per_cat": 40,
+  "timestamp": "20260403T032705Z",
+  "intent_f1": 0.7499,
+  "intent_f1_image": 0.8174,
+  "intent_f1_text": 0.7167,
+  "ndcg_at_3": 0.6548,
+  "mrr": 0.6808,
+  "trust_precision": 0.0,
+  "trust_recall": 0.0,
+  "vvr": 1.0,
+  "fvdr": 0.0,
+  "avg_latency_s": 19.81,
+  "avg_tokens": 13981.0,
+  "total_cost_usd": 16.27,
+  "n_evaluated": 179
+}
