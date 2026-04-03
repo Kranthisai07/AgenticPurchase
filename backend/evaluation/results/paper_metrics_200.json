@@ -2,7 +2,7 @@
   "dataset": "200-query multimodal (80 image / 120 text)",
   "categories": 5,
   "queries_per_cat": 40,
-  "timestamp": "20260403T032705Z",
+  "timestamp": "20260403T161116Z",
   "intent_f1": 0.7499,
   "intent_f1_image": 0.8174,
   "intent_f1_text": 0.7167,

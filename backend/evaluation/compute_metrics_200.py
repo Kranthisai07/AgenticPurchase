@@ -237,6 +237,57 @@ def compute_metrics() -> None:
               f"MRR={cm['mrr']:.3f}  (n={cm['n']})")
     print("=" * W)
 
+    # ── Comparison vs 50-query baseline ──────────────────────────────────────
+    baseline_path = RESULTS_DIR / "eval_definitive_final.json"
+    if baseline_path.exists():
+        try:
+            base = json.load(open(baseline_path, encoding="utf-8"))
+            b_intent   = base.get("intent_modeling", {})
+            b_sourcing = base.get("sourcing_quality", {})
+            b_perf     = base.get("system_performance", {})
+            b_saga     = base.get("saga_evaluation", {})
+
+            b_f1      = b_intent.get("combined_weighted_f1", 0.0)
+            b_img_f1  = b_intent.get("image_mode_f1", 0.0)
+            b_txt_f1  = b_intent.get("text_mode_f1", 0.0)
+            b_ndcg    = b_sourcing.get("ndcg_at_3", 0.0)
+            b_mrr     = b_sourcing.get("mrr", 0.0)
+            b_lat     = b_perf.get("avg_latency_overall_s", 0.0)
+            b_tok     = b_perf.get("avg_tokens_per_run", 0)
+            b_cost    = b_perf.get("avg_cost_per_run_usd", 0.0)
+            b_n       = b_saga.get("total_queries", 50)
+            b_n_img   = b_intent.get("image_mode_n", 20)
+            b_n_txt   = b_intent.get("text_mode_n", 30)
+
+            def _delta(curr, prev):
+                d = curr - prev
+                if d >= 0:
+                    return f"+{d:.4f}"
+                return f"{d:.4f}"
+
+            print()
+            print("  COMPARISON: 50-query baseline  ->  200-query evaluation")
+            print(f"  {'Metric':<34} {'50-query':>9} {'200-query':>9} {'delta':>8}")
+            print(f"  {'-'*62}")
+            print(f"  {'Queries evaluated':<34} {b_n:>9} {len(successful):>9}")
+            print(f"  {'  image':<34} {b_n_img:>9} {n_img:>9}")
+            print(f"  {'  text':<34} {b_n_txt:>9} {n_txt:>9}")
+            print(f"  {'-'*62}")
+            print(f"  {'Intent F1 (combined)':<34} {b_f1:>9.4f} {intent_m.f1:>9.4f} {_delta(intent_m.f1, b_f1):>8}")
+            print(f"  {'Intent F1 (image)':<34} {b_img_f1:>9.4f} {intent_m.image_f1:>9.4f} {_delta(intent_m.image_f1, b_img_f1):>8}")
+            print(f"  {'Intent F1 (text)':<34} {b_txt_f1:>9.4f} {intent_m.text_f1:>9.4f} {_delta(intent_m.text_f1, b_txt_f1):>8}")
+            print(f"  {'-'*62}")
+            print(f"  {'NDCG@3':<34} {b_ndcg:>9.4f} {sourcing_m.ndcg_at_3:>9.4f} {_delta(sourcing_m.ndcg_at_3, b_ndcg):>8}")
+            print(f"  {'MRR':<34} {b_mrr:>9.4f} {sourcing_m.mrr:>9.4f} {_delta(sourcing_m.mrr, b_mrr):>8}")
+            print(f"  {'-'*62}")
+            print(f"  {'Avg latency (s)':<34} {b_lat:>9.1f} {avg_latency_s:>9.1f} {_delta(avg_latency_s, b_lat):>8}")
+            print(f"  {'Avg tokens/run':<34} {b_tok:>9.0f} {avg_tokens:>9.0f} {_delta(avg_tokens, b_tok):>8}")
+            print(f"  {'Avg cost/run ($)':<34} {b_cost:>9.6f} {avg_cost_usd:>9.6f} {_delta(avg_cost_usd, b_cost):>8}")
+            print()
+        except Exception as exc:
+            print(f"  [comparison skipped: {exc}]")
+            print()
+
     # ── Save eval_200_final.json ───────────────────────────────────────────────
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     RESULTS_DIR.mkdir(exist_ok=True)
